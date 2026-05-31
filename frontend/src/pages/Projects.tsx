@@ -4,7 +4,18 @@ import type { Project } from '../types';
 
 function ProjectCard({ project }: { project: Project }) {
     return (
-        <div className="card group">
+        <div className="card group flex flex-col">
+            {/* Image */}
+            {project.image_url && (
+                <div className="mb-4 -mx-6 -mt-6 overflow-hidden rounded-t-lg">
+                    <img
+                        src={project.image_url}
+                        alt={project.title}
+                        className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                </div>
+            )}
+
             {/* Header */}
             <div className="flex items-start justify-between gap-4 mb-4">
                 <h3 className="font-display font-semibold text-xl text-text-primary group-hover:text-accent transition-colors">
@@ -18,7 +29,7 @@ function ProjectCard({ project }: { project: Project }) {
             </div>
 
             {/* Description */}
-            <p className="text-text-secondary text-sm leading-relaxed mb-5">
+            <p className="text-text-secondary text-sm leading-relaxed mb-5 flex-1">
                 {project.description}
             </p>
 
@@ -38,8 +49,7 @@ function ProjectCard({ project }: { project: Project }) {
             <div className="flex gap-3 pt-4 border-t border-border">
                 {project.github_url && (
 
-                    <a
-                        href={project.github_url}
+                    <a href={project.github_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-mono text-xs text-text-secondary hover:text-accent transition-colors"

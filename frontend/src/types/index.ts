@@ -5,7 +5,7 @@ export interface Project {
     tech_stack: string[];
     live_url: string | null;
     github_url: string | null;
-    image: string | null;
+    image_url: string | null;
     is_featured: boolean;
     order: number;
     created_at: string;

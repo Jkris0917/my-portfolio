@@ -158,3 +158,4 @@ DEFAULT_FROM_EMAIL = 'portfolio@johnkris.dev'
 CONTACT_NOTIFICATION_EMAIL = 'gelladojohnkris@gmail.com'
 
 
+print(f"DEBUG={DEBUG}, MEDIA_ROOT={MEDIA_ROOT}, MEDIA_URL={MEDIA_URL}")

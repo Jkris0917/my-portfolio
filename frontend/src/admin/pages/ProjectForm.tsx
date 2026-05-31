@@ -29,12 +29,11 @@ export default function ProjectForm() {
     const isEdit = !!id;
 
     const [form, setForm] = useState<ProjectFormData>(emptyForm);
+    const [image, setImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(isEdit);
     const [errors, setErrors] = useState<Record<string, string[]>>({});
-
-    const token = localStorage.getItem('access_token');
-    const headers = { Authorization: `Bearer ${token}` };
 
     useEffect(() => {
         if (!isEdit) return;
@@ -50,6 +49,7 @@ export default function ProjectForm() {
                     is_featured: p.is_featured,
                     order: p.order,
                 });
+                if (p.image_url) setImagePreview(p.image_url);
             })
             .finally(() => setFetching(false));
     }, [id]);
@@ -63,24 +63,47 @@ export default function ProjectForm() {
         setErrors(prev => ({ ...prev, [target.name]: [] }));
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setImage(file);
+        setImagePreview(URL.createObjectURL(file));
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         setErrors({});
 
-        const payload = {
-            ...form,
-            tech_stack: form.tech_stack
-                .split(',')
-                .map(t => t.trim())
-                .filter(Boolean),
-        };
+        // Use FormData to support file upload
+        const formData = new FormData();
+        formData.append('title', form.title);
+        formData.append('description', form.description);
+        formData.append('live_url', form.live_url);
+        formData.append('github_url', form.github_url);
+        formData.append('is_featured', String(form.is_featured));
+        formData.append('order', String(form.order));
+
+        // Convert comma separated tech stack to JSON array
+        const techArray = form.tech_stack
+            .split(',')
+            .map(t => t.trim())
+            .filter(Boolean);
+        formData.append('tech_stack', JSON.stringify(techArray));
+
+        if (image) {
+            formData.append('image', image);
+        }
 
         try {
             if (isEdit) {
-                await api.put(`/projects/${id}/`, payload, { headers });
+                await api.put(`/projects/${id}/`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
             } else {
-                await api.post('/projects/', payload, { headers });
+                await api.post('/projects/', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
             }
             navigate('/admin-panel/projects');
         } catch (err: any) {
@@ -210,6 +233,31 @@ export default function ProjectForm() {
                         onChange={handleChange}
                         placeholder="https://github.com/..."
                         className={inputClass('github_url')}
+                    />
+                </div>
+
+                {/* Image Upload */}
+                <div>
+                    <label className="font-mono text-xs text-text-secondary uppercase tracking-wider mb-2 block">
+                        Project Image
+                    </label>
+
+                    {/* Preview */}
+                    {imagePreview && (
+                        <div className="mb-3">
+                            <img
+                                src={imagePreview}
+                                alt="Preview"
+                                className="w-full h-48 object-cover rounded border border-border"
+                            />
+                        </div>
+                    )}
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="w-full bg-ink border border-border rounded px-4 py-3 font-mono text-sm text-text-secondary file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:font-mono file:text-xs file:bg-accent file:text-ink hover:file:opacity-90 cursor-pointer"
                     />
                 </div>
 
