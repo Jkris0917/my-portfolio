@@ -157,9 +157,4 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'portfolio@johnkris.dev'
 CONTACT_NOTIFICATION_EMAIL = 'gelladojohnkris@gmail.com'
 
-# DRF
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ],
-}
+

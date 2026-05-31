@@ -25,3 +25,21 @@ export interface ContactResponse {
 export interface ApiError {
     [key: string]: string[];
 }
+
+export interface AuthTokens {
+    access: string;
+    refresh: string;
+}
+
+export interface AdminUser {
+    username: string;
+}
+
+export interface ContactMessage {
+    id: number;
+    name: string;
+    email: string;
+    message: string;
+    created_at: string;
+    is_read: boolean;
+}
