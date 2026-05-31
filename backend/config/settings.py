@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -157,5 +158,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'portfolio@johnkris.dev'
 CONTACT_NOTIFICATION_EMAIL = 'gelladojohnkris@gmail.com'
 
+# Production static files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-print(f"DEBUG={DEBUG}, MEDIA_ROOT={MEDIA_ROOT}, MEDIA_URL={MEDIA_URL}")
+# Production database — Railway provides DATABASE_URL
+import dj_database_url
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
+
+# Production CORS
+CORS_ALLOWED_ORIGINS_PRODUCTION = os.getenv('CORS_ALLOWED_ORIGINS', '')
+if CORS_ALLOWED_ORIGINS_PRODUCTION:
+    CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_PRODUCTION.split(',')
