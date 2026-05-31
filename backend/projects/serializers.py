@@ -38,8 +38,13 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj):
         if obj.image:
+            # Cloudinary URLs are already absolute
+            url = obj.image.url
+            if url.startswith('http'):
+                return url
+            # Fallback for local dev
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.image.url)
-            return obj.image.url
+                return request.build_absolute_uri(url)
+            return url
         return None
