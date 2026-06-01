@@ -1,17 +1,19 @@
 from rest_framework import serializers
-from .models import Certificate
+from .models import GalleryImage
 
-class CertificateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Certificate
-        fields = ['id','title','date_issued','credential_url','image','order']
+class GalleryImageSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
     
+    class Meta:
+        model = GalleryImage
+        fields = ['id', 'title','category','order','created_at']
+        
     def get_image(self, obj):
         if obj.image:
             url = obj.image.url
             if url.startswith('http'):
                 return url
-            request = self.context.get('request')
+            request = url.context.get('request')
             if request:
                 return request.build_absolute_uri(url)
             return url
