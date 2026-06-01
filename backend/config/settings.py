@@ -177,7 +177,8 @@ CORS_ALLOWED_ORIGINS_PRODUCTION = os.getenv('CORS_ALLOWED_ORIGINS', '')
 if CORS_ALLOWED_ORIGINS_PRODUCTION:
     CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_PRODUCTION.split(',')
     
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+_csrf_origins = os.getenv('CSRF_TRUSTED_ORIGINS', '')
+CSRF_TRUSTED_ORIGINS = [o for o in _csrf_origins.split(',') if o.strip()]
 # Trust Railway's HTTPS proxy
 SECURE_PROXY_SSL_HEADER = tuple(os.getenv('SECURE_PROXY_SSL_HEADER', '').split(',')) or None
 

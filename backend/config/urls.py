@@ -11,6 +11,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('projects.urls')),
     path('api/', include('contacts.urls')),
+    path('api/', include('about.urls')),
+    path('api/', include('certificates.urls')),
+    path('api/', include('gallery.urls')),
     path('api/auth/login/', TokenObtainPairView.as_view()),
     path('api/auth/refresh/', TokenRefreshView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
