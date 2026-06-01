@@ -180,7 +180,8 @@ if CORS_ALLOWED_ORIGINS_PRODUCTION:
 _csrf_origins = os.getenv('CSRF_TRUSTED_ORIGINS', '')
 CSRF_TRUSTED_ORIGINS = [o for o in _csrf_origins.split(',') if o.strip()]
 # Trust Railway's HTTPS proxy
-SECURE_PROXY_SSL_HEADER = tuple(os.getenv('SECURE_PROXY_SSL_HEADER', '').split(',')) or None
+_ssl_header = os.getenv('SECURE_PROXY_SSL_HEADER', '')
+SECURE_PROXY_SSL_HEADER = tuple(_ssl_header.split(',')) if ',' in _ssl_header else None
 
 # Cloudinary
 import cloudinary

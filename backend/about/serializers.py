@@ -14,7 +14,7 @@ class ExperienceSerializer(serializers.ModelSerializer):
 class AboutSerializer(serializers.ModelSerializer):
     class Meta:
         model = About
-        fields = ['id','full_name','tagline','bio','photo', 'cv', 'location', 'target', 'education','japanese_level', 'status','email', 'github_url', 'linkedit_url', 'is_active','updated_at']
+        fields = ['id','full_name','tagline','bio','photo', 'cv', 'location', 'target', 'education','japanese_level', 'status','email', 'github_url', 'linkedin_url', 'is_active','updated_at']
     
     def get_photo(self,obj):
         if obj.photo:

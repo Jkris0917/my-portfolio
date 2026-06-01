@@ -19,7 +19,7 @@ export interface ContactFormData {
 }
 
 export interface ContactResponse {
-    detail: string
+    detail: string;
 }
 
 export interface ApiError {
@@ -42,4 +42,58 @@ export interface ContactMessage {
     message: string;
     created_at: string;
     is_read: boolean;
+}
+
+export interface About {
+    id: number;
+    full_name: string;
+    tagline: string;
+    bio: string;
+    photo: string | null;
+    cv: string | null;
+    location: string;
+    target: string;
+    education: string;
+    japanese_level: string;
+    status: string;
+    email: string;
+    github_url: string;
+    linkedin_url: string;
+    updated_at: string;
+}
+
+export interface Skill {
+    id: number;
+    name: string;
+    category: string;
+    order: number;
+}
+
+export interface Experience {
+    id: number;
+    role: string;
+    company: string;
+    period: string;
+    location: string;
+    description: string;
+    order: number;
+}
+
+export interface Certificate {
+    id: number;
+    title: string;
+    issuer: string;
+    date_issued: string;
+    credential_url: string | null;
+    image: string | null;
+    order: number;
+}
+
+export interface GalleryImage {
+    id: number;
+    title: string;
+    image: string;
+    category: string;
+    order: number;
+    created_at: string;
 }
