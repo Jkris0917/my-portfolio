@@ -19,12 +19,12 @@ def send_notification_email(name, email, message):
             ),
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[settings.CONTACT_NOTIFICATION_EMAIL],
-            fail_silently=True,
+            fail_silently=False,
         )
-    except Exception:
-        pass
-
-
+        print(f"Email sent successfully to {settings.CONTACT_NOTIFICATION_EMAIL}")
+    except Exception as e:
+        print(f"Email failed: {e}")
+        
 class ContactMessageView(APIView):
 
     def post(self, request):
