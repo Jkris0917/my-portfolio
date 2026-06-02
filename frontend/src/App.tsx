@@ -20,6 +20,13 @@ import Dashboard from './admin/pages/Dashboard';
 import ProjectsList from './admin/pages/ProjectsList';
 import ProjectForm from './admin/pages/ProjectForm';
 import Messages from './admin/pages/Messages';
+import AboutForm from './admin/pages/AboutForm';
+
+import ExperienceManager from './admin/pages/ExperienceManager';
+import CertificatesManager from './admin/pages/CertificatesManager';
+import GalleryManager from './admin/pages/GalleryManager';
+import ChangePassword from './admin/pages/ChangePassword';
+import SkillsManager from './admin/pages/SkillsManager';
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -52,28 +59,54 @@ function App() {
             <AdminLayout><Dashboard /></AdminLayout>
           </ProtectedRoute>
         } />
-
         <Route path="/admin-panel/projects" element={
           <ProtectedRoute>
             <AdminLayout><ProjectsList /></AdminLayout>
           </ProtectedRoute>
         } />
-
         <Route path="/admin-panel/projects/add" element={
           <ProtectedRoute>
             <AdminLayout><ProjectForm /></AdminLayout>
           </ProtectedRoute>
         } />
-
         <Route path="/admin-panel/projects/:id" element={
           <ProtectedRoute>
             <AdminLayout><ProjectForm /></AdminLayout>
           </ProtectedRoute>
         } />
-
         <Route path="/admin-panel/messages" element={
           <ProtectedRoute>
             <AdminLayout><Messages /></AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-panel/about" element={
+          <ProtectedRoute>
+            <AdminLayout><AboutForm /></AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-panel/skills" element={
+          <ProtectedRoute>
+            <AdminLayout><SkillsManager /></AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-panel/experience" element={
+          <ProtectedRoute>
+            <AdminLayout><ExperienceManager /></AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-panel/certificates" element={
+          <ProtectedRoute>
+            <AdminLayout><CertificatesManager /></AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-panel/gallery" element={
+          <ProtectedRoute>
+            <AdminLayout><GalleryManager /></AdminLayout>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin-panel/change-password" element={
+          <ProtectedRoute>
+            <AdminLayout><ChangePassword /></AdminLayout>
           </ProtectedRoute>
         } />
 
