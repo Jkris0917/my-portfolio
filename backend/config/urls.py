@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from .auth_views import ChangePasswordView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -16,4 +17,5 @@ urlpatterns = [
     path('api/', include('gallery.urls')),
     path('api/auth/login/', TokenObtainPairView.as_view()),
     path('api/auth/refresh/', TokenRefreshView.as_view()),
+    path('api/auth/change-password/', ChangePasswordView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
