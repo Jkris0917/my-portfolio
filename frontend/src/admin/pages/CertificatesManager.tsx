@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { FaTrash, FaPlus, FaEdit } from 'react-icons/fa';
 import api from '../../api/axios';
 import type { Certificate } from '../../types';
+import Swal from 'sweetalert2';
 
 const emptyForm = {
     title: '',
@@ -21,6 +22,7 @@ export default function CertificatesManager() {
     const [image, setImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState<number | null>(null);
 
     useEffect(() => {
         api.get<Certificate[]>('/certificates/')
@@ -87,13 +89,30 @@ export default function CertificatesManager() {
     };
 
     const handleDelete = async (id: number, title: string) => {
-        if (!confirm(`Delete "${title}"?`)) return;
+        const result = await Swal.fire({
+            title: `Delete "${title}"?`,
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel',
+            background: '#161B22',
+            color: '#E6EDF3',
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#21262D',
+            iconColor: '#f59e0b',
+        });
+
+        if (!result.isConfirmed) return;
+        setDeleting(id);
         try {
             await api.delete(`/certificates/${id}/`);
             setCerts(prev => prev.filter(c => c.id !== id));
             toast.success('Certificate deleted.');
         } catch {
-            toast.error('Failed to delete.');
+            toast.error('Failed to delete certificate.');
+        } finally {
+            setDeleting(null);
         }
     };
 
@@ -193,6 +212,7 @@ export default function CertificatesManager() {
                                     <FaEdit size={13} />
                                 </button>
                                 <button onClick={() => handleDelete(cert.id, cert.title)}
+                                    disabled={deleting === cert.id}
                                     className="text-text-secondary hover:text-red-400 transition-colors p-1">
                                     <FaTrash size={12} />
                                 </button>
@@ -204,3 +224,4 @@ export default function CertificatesManager() {
         </div>
     );
 }
+

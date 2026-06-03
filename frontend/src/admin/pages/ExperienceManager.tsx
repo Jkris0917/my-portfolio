@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { FaTrash, FaPlus, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
 import api from '../../api/axios';
 import type { Experience } from '../../types';
+import Swal from 'sweetalert2';
 
 const emptyForm = {
     role: '',
@@ -20,6 +21,7 @@ export default function ExperienceManager() {
     const [editId, setEditId] = useState<number | null>(null);
     const [form, setForm] = useState(emptyForm);
     const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState<number | null>(null);
 
     useEffect(() => {
         api.get<Experience[]>('/about/experience/')
@@ -68,13 +70,30 @@ export default function ExperienceManager() {
     };
 
     const handleDelete = async (id: number, role: string) => {
-        if (!confirm(`Delete "${role}"?`)) return;
+        const result = await Swal.fire({
+            title: `Delete "${role}"?`,
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel',
+            background: '#161B22',
+            color: '#E6EDF3',
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#21262D',
+            iconColor: '#f59e0b',
+        });
+
+        if (!result.isConfirmed) return;
+        setDeleting(id);
         try {
             await api.delete(`/about/experience/${id}/`);
             setExperiences(prev => prev.filter(e => e.id !== id));
             toast.success('Experience deleted.');
         } catch {
-            toast.error('Failed to delete.');
+            toast.error('Failed to delete experience.');
+        } finally {
+            setDeleting(null);
         }
     };
 
@@ -165,7 +184,7 @@ export default function ExperienceManager() {
                                     <button onClick={() => handleEdit(exp)} className="text-text-secondary hover:text-accent transition-colors p-1">
                                         <FaEdit size={13} />
                                     </button>
-                                    <button onClick={() => handleDelete(exp.id, exp.role)} className="text-text-secondary hover:text-red-400 transition-colors p-1">
+                                    <button onClick={() => handleDelete(exp.id, exp.role)} disabled={deleting === exp.id} className="text-text-secondary hover:text-red-400 transition-colors p-1">
                                         <FaTrash size={12} />
                                     </button>
                                 </div>

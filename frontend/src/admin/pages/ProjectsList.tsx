@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../api/axios';
-import type{ Project } from '../../types';
+import type { Project } from '../../types';
+import Swal from 'sweetalert2';
+import { toast } from 'sonner';
 
 export default function ProjectsList() {
     const [projects, setProjects] = useState<Project[]>([]);
@@ -18,17 +20,33 @@ export default function ProjectsList() {
     }, []);
 
     const handleDelete = async (id: number) => {
-        if (!confirm('Are you sure you want to delete this project?')) return;
+        const result = await Swal.fire({
+            title: 'Delete Project?',
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel',
+            background: '#161B22',
+            color: '#E6EDF3',
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#21262D',
+            iconColor: '#f59e0b',
+        });
+
+        if (!result.isConfirmed) return;
         setDeleting(id);
         try {
             await api.delete(`/projects/${id}/`, { headers });
             setProjects(prev => prev.filter(p => p.id !== id));
+            toast.success('Project deleted.');
         } catch {
-            alert('Failed to delete project.');
+            toast.error('Failed to delete project.');
         } finally {
             setDeleting(null);
         }
     };
+
 
     return (
         <div className="space-y-6">

@@ -46,13 +46,14 @@ class ContactMessageView(APIView):
             )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 class ContactMessageListView(generics.ListAPIView):
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
     permission_classes = [IsAuthenticated]
 
 
-class ContactMessageDetailView(generics.RetrieveUpdateAPIView):
+class ContactMessageDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
     permission_classes = [IsAuthenticated]

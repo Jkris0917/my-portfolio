@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { FaTrash, FaPlus } from 'react-icons/fa';
 import api from '../../api/axios';
 import type { Skill } from '../../types';
+import Swal from 'sweetalert2';
 
 const categoryOptions = [
     { value: 'languages', label: 'Languages & Frameworks' },
@@ -19,6 +20,7 @@ export default function SkillsManager() {
     const [loading, setLoading] = useState(true);
     const [newSkill, setNewSkill] = useState({ name: '', category: 'languages', order: 0 });
     const [adding, setAdding] = useState(false);
+    const [deleting, setDeleting] = useState<number | null>(null);
 
     useEffect(() => {
         api.get<Skill[]>('/about/skills/')
@@ -42,13 +44,30 @@ export default function SkillsManager() {
     };
 
     const handleDelete = async (id: number, name: string) => {
-        if (!confirm(`Delete "${name}"?`)) return;
+        const result = await Swal.fire({
+            title: `Delete "${name}"?`,
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel',
+            background: '#161B22',
+            color: '#E6EDF3',
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#21262D',
+            iconColor: '#f59e0b',
+        });
+
+        if (!result.isConfirmed) return;
+        setDeleting(id);
         try {
             await api.delete(`/about/skills/${id}/`);
             setSkills(prev => prev.filter(s => s.id !== id));
-            toast.success(`${name} deleted.`);
+            toast.success('Skill deleted.');
         } catch {
             toast.error('Failed to delete skill.');
+        } finally {
+            setDeleting(null);
         }
     };
 
@@ -136,7 +155,8 @@ export default function SkillsManager() {
                                             <span className="font-mono text-sm text-text-primary">{skill.name}</span>
                                             <button
                                                 onClick={() => handleDelete(skill.id, skill.name)}
-                                                className="text-text-secondary hover:text-red-400 transition-colors p-1"
+                                                disabled={deleting === skill.id}
+                                                className="text-text-secondary hover:text-red-400 transition-colors p-1 disabled:opacity-50"
                                             >
                                                 <FaTrash size={12} />
                                             </button>

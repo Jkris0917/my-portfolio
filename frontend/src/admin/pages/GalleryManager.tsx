@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { FaTrash, FaPlus } from 'react-icons/fa';
 import api from '../../api/axios';
 import type { GalleryImage } from '../../types';
+import Swal from 'sweetalert2';
 
 const categoryOptions = ['personal', 'work', 'event', 'other'];
 
@@ -20,6 +21,7 @@ export default function GalleryManager() {
     const [image, setImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState<number | null>(null);
     const [filter, setFilter] = useState('all');
 
     useEffect(() => {
@@ -66,13 +68,30 @@ export default function GalleryManager() {
     };
 
     const handleDelete = async (id: number, title: string) => {
-        if (!confirm(`Delete "${title}"?`)) return;
+        const result = await Swal.fire({
+            title: `Delete "${title}"?`,
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it',
+            cancelButtonText: 'Cancel',
+            background: '#161B22',
+            color: '#E6EDF3',
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#21262D',
+            iconColor: '#f59e0b',
+        });
+
+        if (!result.isConfirmed) return;
+        setDeleting(id);
         try {
             await api.delete(`/gallery/${id}/`);
-            setImages(prev => prev.filter(i => i.id !== id));
+            setImages(prev => prev.filter(m => m.id !== id));
             toast.success('Image deleted.');
         } catch {
-            toast.error('Failed to delete.');
+            toast.error('Failed to delete image.');
+        } finally {
+            setDeleting(null);
         }
     };
 
@@ -177,7 +196,8 @@ export default function GalleryManager() {
                                 <p className="font-mono text-xs text-text-primary text-center">{img.title}</p>
                                 <button
                                     onClick={() => handleDelete(img.id, img.title)}
-                                    className="bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-colors p-2 rounded"
+                                    disabled={deleting === img.id}
+                                    className="bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-colors p-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <FaTrash size={12} />
                                 </button>
@@ -189,3 +209,4 @@ export default function GalleryManager() {
         </div>
     );
 }
+
