@@ -43,7 +43,7 @@ export default function AboutForm() {
                     github_url: d.github_url,
                     linkedin_url: d.linkedin_url,
                 });
-                if (d.photo) setPhotoPreview(d.photo);
+                if (d.photo_url) setPhotoPreview(d.photo_url);
             })
             .catch(() => { })
             .finally(() => setFetching(false));

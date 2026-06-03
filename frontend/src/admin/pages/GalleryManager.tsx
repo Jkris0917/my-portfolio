@@ -171,7 +171,7 @@ export default function GalleryManager() {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {filtered.map(img => (
                         <div key={img.id} className="group relative aspect-square overflow-hidden rounded-lg border border-border">
-                            <img src={img.image} alt={img.title}
+                            <img src={img.image_url} alt={img.title}
                                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                             <div className="absolute inset-0 bg-ink/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 p-3">
                                 <p className="font-mono text-xs text-text-primary text-center">{img.title}</p>

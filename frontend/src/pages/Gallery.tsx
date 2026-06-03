@@ -29,7 +29,7 @@ function LightBox({ image, onClose }: { image: GalleryImage; onClose: () => void
                     className="relative max-w-4xl w-full"
                 >
                     <img
-                        src={image.image}
+                        src={image.image_url}
                         alt={image.title}
                         className="w-full max-h-[80vh] object-contain rounded-xl border border-border"
                     />
@@ -133,7 +133,7 @@ export default function Gallery() {
                             className="group relative aspect-square overflow-hidden rounded-lg border border-border cursor-pointer hover:border-accent/40 transition-colors"
                         >
                             <img
-                                src={img.image}
+                                src={img.image_url}
                                 alt={img.title}
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />

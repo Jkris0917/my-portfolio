@@ -148,9 +148,9 @@ export default function Home() {
                             <Link to="/contact" className="btn-outline">
                                 Get In Touch
                             </Link>
-                            {about?.cv && (
+                            {about?.cv_url && (
 
-                                <a href={about.cv}
+                                <a href={about.cv_url}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="btn-outline"
@@ -197,9 +197,9 @@ export default function Home() {
 
                             {/* Photo */}
                             <div className="relative w-80 h-80 rounded-2xl overflow-hidden border-2 border-border">
-                                {about?.photo ? (
+                                {about?.photo_url ? (
                                     <img
-                                        src={about.photo}
+                                        src={about.photo_url}
                                         alt={about.full_name}
                                         className="w-full h-full object-cover"
                                     />

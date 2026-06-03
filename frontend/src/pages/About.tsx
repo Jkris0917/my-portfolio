@@ -196,7 +196,7 @@ export default function About() {
                 <div className="space-y-6">
 
                     {/* Photo */}
-                    {about?.photo && (
+                    {about?.photo_url && (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -205,7 +205,7 @@ export default function About() {
                         >
                             <div className="absolute inset-0 rounded-2xl bg-accent/10 blur-2xl scale-110" />
                             <img
-                                src={about.photo}
+                                src={about.photo_url}
                                 alt={about.full_name}
                                 className="relative w-full aspect-square object-cover rounded-2xl border-2 border-border"
                             />
@@ -253,8 +253,8 @@ export default function About() {
                                     <FaEnvelope size={13} /> {about.email}
                                 </a>
                             )}
-                            {about?.cv && (
-                                <a href={about.cv} target="_blank" rel="noopener noreferrer"
+                            {about?.cv_url && (
+                                <a href={about.cv_url} target="_blank" rel="noopener noreferrer"
                                     className="flex items-center gap-2 font-mono text-xs text-accent hover:underline transition-colors py-1">
                                     <FaDownload size={13} /> Download CV
                                 </a>
