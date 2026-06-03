@@ -49,8 +49,8 @@ export interface About {
     full_name: string;
     tagline: string;
     bio: string;
-    photo: string | null;
-    cv: string | null;
+    photo_url: string | null;
+    cv_url: string | null;
     location: string;
     target: string;
     education: string;
@@ -92,7 +92,7 @@ export interface Certificate {
 export interface GalleryImage {
     id: number;
     title: string;
-    image: string;
+    image_url: string;
     category: string;
     order: number;
     created_at: string;
