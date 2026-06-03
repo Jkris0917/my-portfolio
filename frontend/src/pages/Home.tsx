@@ -130,8 +130,7 @@ export default function Home() {
                             variants={fadeUp}
                             className="text-text-secondary text-lg leading-relaxed mb-10 max-w-xl"
                         >
-                            {about?.bio?.slice(0, 200) || 'I build production-grade REST APIs with authentication, role-based permissions, background task processing, and automated testing.'}
-                            {about?.bio && about.bio.length > 200 ? '...' : ''}
+                            {about?.bio || 'I build production-grade REST APIs with authentication, role-based permissions, background task processing, and automated testing.'}
                         </motion.p>
 
                         {/* CTAs */}
